@@ -1,0 +1,59 @@
+const taskInput = document.getElementById("taskInput");
+const pendingTasks = document.getElementById("pendingTasks");
+const completedTasks = document.getElementById("completedTasks");
+
+function addTask() {
+    if (taskInput.value.trim() !== "") {
+        const taskText = taskInput.value;
+        const taskItem = createTaskItem(taskText);
+        pendingTasks.appendChild(taskItem);
+        taskInput.value = "";
+    }
+}
+
+function createTaskItem(text) {
+    const li = document.createElement("li");
+    const taskText = document.createElement("span");
+    taskText.textContent = text;
+    
+    const completeButton = document.createElement("button");
+    completeButton.textContent = "Complete";
+    completeButton.onclick = function() {
+        completeTask(li);
+    };
+    
+    const editButton = document.createElement("button");
+    editButton.textContent = "Edit";
+    editButton.onclick = function() {
+        editTask(li);
+    };
+    
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete";
+    deleteButton.onclick = function() {
+        li.remove();
+    };
+    
+    li.appendChild(taskText);
+    li.appendChild(completeButton);
+    li.appendChild(editButton);
+    li.appendChild(deleteButton);
+    
+    return li;
+}
+
+function completeTask(taskItem) {
+    taskItem.classList.toggle("completed");
+    const taskText = taskItem.querySelector("span").textContent;
+    const completedTaskItem = createTaskItem(taskText);
+    completedTasks.appendChild(completedTaskItem);
+    taskItem.remove();
+}
+
+function editTask(taskItem) {
+    const taskText = taskItem.querySelector("span").textContent;
+    const newText = prompt("Edit task:", taskText);
+    if (newText !== null && newText.trim() !== "") {
+        taskItem.querySelector("span").textContent = newText;
+    }
+}
